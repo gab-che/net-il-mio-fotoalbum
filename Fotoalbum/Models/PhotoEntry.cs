@@ -10,9 +10,7 @@ namespace Fotoalbum.Models
         [Column("title")] public string Title { get; set; }
         [Column("description")] public string Description { get; set; }
         [Column("is_visible")] public bool IsVisible { get; set; }
-        [Column("author_id")] public int AuthorId { get; set; }
-        public Author Author { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<Category>? Categories { get; set; }
         [Column("image_id")] public int ImageId { get; set; }
         public Image Image { get; set; }
         [NotMapped] public IFormFile? ImageFile { get; set; }

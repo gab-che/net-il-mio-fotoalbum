@@ -14,7 +14,7 @@ namespace Fotoalbum.Controllers
 
         public IActionResult Index()
         {
-            List<PhotoEntry> photos = _photoalbumContext.PhotoEntries.Include(p => p.Categories).ToList();
+            List<PhotoEntry> photos = _photoalbumContext.PhotoEntries.Include(p => p.Categories).Include(p => p.Image).ToList();
             if (photos.Count > 0)
                 return View(photos);
             else

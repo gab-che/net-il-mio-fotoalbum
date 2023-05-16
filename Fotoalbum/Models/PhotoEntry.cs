@@ -11,8 +11,8 @@ namespace Fotoalbum.Models
         [Column("description")] public string Description { get; set; }
         [Column("is_visible")] public bool IsVisible { get; set; }
         public List<Category>? Categories { get; set; }
-        [Column("image_id")] public int ImageId { get; set; }
-        public Image Image { get; set; }
+        [Column("image_id")] public int? ImageId { get; set; }
+        public Image? Image { get; set; }
         [NotMapped] public IFormFile? ImageFile { get; set; }
         [NotMapped] public string ImageBase64 => Image == null ? "" : "data:image/jpg;base64," + Convert.ToBase64String(Image.Data);
 

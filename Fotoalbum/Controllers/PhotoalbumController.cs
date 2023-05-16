@@ -21,6 +21,19 @@ namespace Fotoalbum.Controllers
                 return View("NoPhotos");
         }
 
+        public IActionResult Show(int Id)
+        {
+            try
+            {
+                PhotoEntry photo = _photoalbumContext.PhotoEntries.Include(p => p.Categories).First(p => p.Id == Id);
+                return View(photo);
+            }
+            catch
+            {
+                return View("NotFound", Id);
+            }
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -99,6 +112,21 @@ namespace Fotoalbum.Controllers
             _photoalbumContext.PhotoEntries.Add(photoEntry);
             _photoalbumContext.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int Id)
+        {
+            try
+            {
+                PhotoEntry photoToDelete = _photoalbumContext.PhotoEntries.First(p => p.Id == Id);
+                _photoalbumContext.PhotoEntries.Remove(photoToDelete);
+                _photoalbumContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View("NotFound", Id);
+            }
         }
     }
 }

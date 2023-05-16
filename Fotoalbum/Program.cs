@@ -16,7 +16,14 @@ namespace Fotoalbum
             // Add db context
             builder.Services.AddDbContext<PhotoalbumContext>();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PhotoalbumContext>();
 
             var app = builder.Build();

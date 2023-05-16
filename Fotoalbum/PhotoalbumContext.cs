@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Fotoalbum.Seeder;
 
 namespace Fotoalbum
 {
@@ -23,6 +24,12 @@ namespace Fotoalbum
                               .Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("Photoalbum"));
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Seed();
         }
     }
 

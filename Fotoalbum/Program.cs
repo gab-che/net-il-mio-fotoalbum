@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Fotoalbum;
 
 namespace Fotoalbum
 {
@@ -12,9 +14,10 @@ namespace Fotoalbum
             builder.Services.AddControllersWithViews();
 
             // Add db context
-            builder.Services.AddDbContext<PhotoalbumContext>(
-                options => options.UseSqlServer(builder.Configuration.GetConnectionString("Photoalbum"))
-                );
+            builder.Services.AddDbContext<PhotoalbumContext>();
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<PhotoalbumContext>();
 
             var app = builder.Build();
 
@@ -30,6 +33,9 @@ namespace Fotoalbum
             app.UseStaticFiles();
 
             app.UseRouting();
+                        app.UseAuthentication();;
+
+            app.UseAuthorization();
 
             app.UseAuthorization();
 
@@ -37,6 +43,7 @@ namespace Fotoalbum
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            app.MapRazorPages();
             app.Run();
         }
     }

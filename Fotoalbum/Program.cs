@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Fotoalbum
 {
     public class Program
@@ -8,6 +10,11 @@ namespace Fotoalbum
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Add db context
+            builder.Services.AddDbContext<PhotoalbumContext>(
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("Photoalbum"))
+                );
 
             var app = builder.Build();
 

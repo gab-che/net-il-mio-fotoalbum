@@ -1,5 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhotoFormModel
 @{
+    FormModel newform = new()
+            {
+                Title = "Form di creazione nuova foto",
+                Action = "Create"
+            };
 }
+
+<h1 class="text-center">@newform.Title</h1>
+<div class="row">
+    <div class="col-md-6 m-auto">
+        <form asp-controller="Photoalbum" asp-action="@newform.Action" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.Partial("_FormPhoto")
+        </form>
+    </div>
+</div>

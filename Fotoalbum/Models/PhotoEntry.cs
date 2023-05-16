@@ -15,5 +15,7 @@ namespace Fotoalbum.Models
         public Image Image { get; set; }
         [NotMapped] public IFormFile? ImageFile { get; set; }
         [NotMapped] public string ImageBase64 => Image == null ? "" : "data:image/jpg;base64," + Convert.ToBase64String(Image.Data);
+
+        public PhotoEntry() { }
     }
 }

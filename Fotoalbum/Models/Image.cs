@@ -9,5 +9,7 @@ namespace Fotoalbum.Models
         [Key][Column("id")] public int Id { get; set; }
         [Column("data_bytes")] public byte[] Data { get; set; }
         public List<PhotoEntry> PhotoEntries { get; set; }
+
+        public Image() { }
     }
 }

@@ -1,0 +1,58 @@
+﻿@model PhotoFormModel
+
+<!-- titolo -->
+<div class="form-floating mb-3">
+    <input type="text" class="form-control" id="floatingTitle" asp-for="PhotoEntry.Title">
+    <label for="floatingTitle">Titolo</label>
+</div>
+
+<!-- descrizione -->
+<div class="form-floating mb-3">
+    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 200px" asp-for="PhotoEntry.Description"></textarea>
+    <label for="floatingTextarea">Descrizione</label>
+</div>
+
+<!-- categorie -->
+<div class="mb-3">
+    @foreach(var cat in Model.Categories)
+    {
+        <div class="form-check">
+            <input class="form-check-input" 
+                   type="checkbox" 
+                   value="@cat.Value" 
+                   id="@cat.Text" 
+                   name="SelectedCategories"
+                   checked="@Model.SelectedCategories?.Contains(cat.Value)">
+            <label class="form-check-label" for="@cat.Text">
+                @cat.Text
+            </label>
+        </div>
+    }
+</div>
+
+<!-- visibilità -->
+<div class="form-check form-switch mb-3">
+    <input class="form-check-input" 
+           type="checkbox" 
+           role="switch" 
+           id="flexSwitchCheckChecked"
+           checked
+           name="PhotoEntry.IsVisible"
+           value="true">
+    <label class="form-check-label" for="flexSwitchCheckChecked">Cambia visibilità</label>
+</div>
+
+<div class="input-group">
+
+    <!-- immagine -->
+    <input type="file" 
+           class="form-control" 
+           id="inputGroupFile" 
+           aria-describedby="inputGroupFile" 
+           aria-label="Upload"
+           asp-for="PhotoEntry.ImageFile"
+           accept="image/*">
+
+    <!-- invia -->
+    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFile">Invia</button>
+</div>

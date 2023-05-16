@@ -10,5 +10,7 @@ namespace Fotoalbum.Models
         [Column("name")] public string Name { get; set; }
         [Column("description")] public string Description { get; set; }
         public List<PhotoEntry>? PhotoEntries { get; set; }
+
+        public Category() { }
     }
 }

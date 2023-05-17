@@ -12,9 +12,17 @@ namespace Fotoalbum.Controllers
         private PhotoalbumContext _photoalbumContext;
         public PhotoalbumController(PhotoalbumContext photoalbumContext) => _photoalbumContext = photoalbumContext;
 
-        public IActionResult Index()
+        public IActionResult Index(int? catId)
         {
-            List<PhotoEntry> photos = _photoalbumContext.PhotoEntries.Include(p => p.Categories).Include(p => p.Image).ToList();
+            List<PhotoEntry> photos = _photoalbumContext.PhotoEntries.Include(p => p.Categories).Include(p => p.Image).ToList(); ;
+            if (catId != null)
+            {
+                Category category = _photoalbumContext.Categories.Include(c => c.PhotoEntries).FirstOrDefault(c => c.Id == catId);
+                if (category != null)
+                    photos = category.PhotoEntries.ToList();
+                else
+                    photos = new List<PhotoEntry>();
+            }
             if (photos.Count > 0)
                 return View(photos);
             else

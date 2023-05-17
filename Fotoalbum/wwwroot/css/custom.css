@@ -2,11 +2,26 @@
     position: relative;
 }
 
+.photo_img {
+    aspect-ratio: 4/3;
+    object-fit: cover;
+}
+
+.overlay{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: black;
+}
+
 .action_buttons {
     position: absolute;
     top: 1rem;
     right: 1rem;
     visibility: hidden;
+    z-index: 1;
 }
 
 .photo_card:hover .action_buttons{

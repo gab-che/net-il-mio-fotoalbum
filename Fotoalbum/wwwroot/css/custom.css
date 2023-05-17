@@ -27,3 +27,12 @@
 .photo_card:hover .action_buttons{
     visibility: visible;
 }
+
+.btn_message {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+}

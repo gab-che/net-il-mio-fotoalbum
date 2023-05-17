@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Fotoalbum;
+using System.Text.Json.Serialization;
 
 namespace Fotoalbum
 {
@@ -25,6 +26,10 @@ namespace Fotoalbum
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PhotoalbumContext>();
+
+            // Ignore cycles json api
+            builder.Services.AddControllers()
+                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             var app = builder.Build();
 

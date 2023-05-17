@@ -77,6 +77,7 @@ namespace Fotoalbum.Controllers
                 {
                     PhotoEntry = data.PhotoEntry,
                     Categories = checkboxes,
+                    SelectedCategories = data.SelectedCategories
                 };
                 return View(model);
             }
@@ -112,6 +113,67 @@ namespace Fotoalbum.Controllers
             _photoalbumContext.PhotoEntries.Add(photoEntry);
             _photoalbumContext.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Update(int Id)
+        {
+            try
+            {
+                PhotoEntry photoEntry = _photoalbumContext.PhotoEntries
+                    .Include(p => p.Categories)
+                    .Include(p => p.Image)
+                    .First(p => p.Id == Id);
+
+                List<Category> categories = _photoalbumContext.Categories.ToList();
+                
+                List<SelectListItem> checkboxes = new();
+                foreach (var category in categories)
+                {
+                    checkboxes.Add(new SelectListItem()
+                    {
+                        Text = category.Name,
+                        Value = category.Id.ToString()
+                    });
+                }
+
+                List<string> selectedCats = new();
+                foreach(var cat in photoEntry.Categories)
+                    selectedCats.Add(cat.Id.ToString());
+
+                PhotoFormModel model = new()
+                {
+                    PhotoEntry = photoEntry,
+                    Categories = checkboxes,
+                    SelectedCategories = selectedCats
+                };
+
+                return View(model);
+            }
+            catch
+            {
+                return View("NotFound", Id);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(PhotoFormModel data, int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                //code here
+            }
+
+            try
+            {
+                //more code here
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View("NotFound", Id);
+            }
         }
 
         public IActionResult Delete(int Id)

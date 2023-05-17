@@ -1,0 +1,20 @@
+﻿@model Category
+@{
+    ViewData["Title"] = $"Edit '{Model.Name}'";
+    FormModel newform = new()
+            {
+                Title = $"Form di edit categoria #{Model.Id}",
+                Action = "Update"
+            };
+}
+
+<h1 class="text-center">@newform.Title</h1>
+<div class="row">
+    <div class="col-md-6 m-auto">
+        <form asp-controller="Category" asp-action="@newform.Action" asp-route-id="@Model.Id" method="post">
+            @Html.AntiForgeryToken()
+            @Html.Partial("_FormCategory")
+            <input type="hidden" asp-for="@Model.Id" />
+        </form>
+    </div>
+</div>

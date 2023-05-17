@@ -1,0 +1,19 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Aggiungi categoria";
+    FormModel newform = new()
+            {
+                Title = "Form di creazione nuova categoria",
+                Action = "Create"
+            };
+}
+
+<h1 class="text-center">@newform.Title</h1>
+<div class="row">
+    <div class="col-md-6 m-auto">
+        <form asp-controller="Category" asp-action="@newform.Action" method="post">
+            @Html.AntiForgeryToken()
+            @Html.Partial("_FormCategory")
+        </form>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+﻿.photo_card{
+    position: relative;
+}
+
+.action_buttons {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    visibility: hidden;
+}
+
+.photo_card:hover .action_buttons{
+    visibility: visible;
+}

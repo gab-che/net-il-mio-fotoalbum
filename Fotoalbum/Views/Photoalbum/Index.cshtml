@@ -12,13 +12,46 @@
     @foreach (PhotoEntry photo in Model)
     {
         <div class="col-md-4 mb-3">
-            <div class="card h-100">
+            <div class="card h-100 photo_card">
+                <div class="action_buttons d-flex gap-1">
+                    <a href="@Url.Action("Show", "Photoalbum", new {Id=@photo.Id})" class="btn btn-primary btn-sm">
+                        <i class="fa-regular fa-eye"></i>
+                    </a>
+                    <a href="@Url.Action("Update", "Photoalbum", new {Id=@photo.Id})" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+                    <form asp-controller="Photoalbum" asp-action="Delete" asp-route-id="@photo.Id" method="post" class="del_photo">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-danger btn-sm"><i class="fa-regular fa-trash-can"></i></button>
+                    </form>
+                </div>
                 <img class="card-img-top" src="@photo.ImageBase64" alt="@photo.Title">
                 <div class="card-body">
                     <h5 class="card-title">@photo.Title</h5>
                     <p class="card-text lead">@photo.Description</p>
+                    <div class="photo_categories">
+                        @if (photo.Categories != null)
+                        {
+                            @foreach (var cat in photo.Categories)
+                            {
+                                <span class="badge bg-success">#@cat.Name </span>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     }
 </div>
+<script>
+    const forms = document.querySelectorAll(".del_photo");
+    forms.forEach((form) => {
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const confirm_del = confirm("Sicuro di voler eliminare per sempre questa foto?");
+            if (confirm_del) {
+                form.submit();
+            }
+        })
+    })
+</script>

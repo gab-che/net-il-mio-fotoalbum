@@ -1,0 +1,34 @@
+﻿@model Message
+
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Manda un messaggio</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    @Html.AntiForgeryToken()
+                    <!-- mail -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="msgEmail">
+                        <label for="msgEmail">Email</label>
+                        <div class="text-danger" id="emailError"></div>
+                    </div>
+
+                    <!-- testo -->
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="msgText" style="height: 200px"></textarea>
+                        <label for="msgText">Messaggio</label>
+                        <div class="text-danger" id="textError"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="sendMsg">Invia</button>
+            </div>
+        </div>
+    </div>
+</div>

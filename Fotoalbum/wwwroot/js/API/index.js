@@ -9,7 +9,10 @@ const noPhotoDiv = document.getElementById("no_photos");
 const photoListDiv = document.getElementById("photo_list");
 const loader = document.getElementById("loader");
 
+// post api
 const sendMsgButton = document.getElementById("sendMsg");
+let emailErrorDiv = document.getElementById("emailError");
+let textErrorDiv = document.getElementById("textError");
 
 getAllPhotos();
 
@@ -60,17 +63,37 @@ async function getAllPhotos(input) {
 }
 
 sendMsgButton.addEventListener("click", () => {
-    const email = document.getElementById("msgEmail");
-    const text = document.getElementById("msgText");
+    let email = document.getElementById("msgEmail");
+    let text = document.getElementById("msgText");
 
     axios.post(`${url}${urlApiSendMessage}`, {
         Email: email.value,
         TextMessage: text.value
     })
         .then(resp => {
-            console.log(resp);
+            email.value = '';
+            text.value = '';
+            emailErrorDiv.innerHTML = '';
+            textErrorDiv.innerHTML = '';
         })
         .catch(err => {
-            console.log(err);
+            console.log(err)
+            emailErrorDiv.innerHTML = '';
+            textErrorDiv.innerHTML = '';
+            const errorsObject = err.response.data.errors;
+            if ("Email" in errorsObject) {
+                errorsObject["Email"].forEach(error => {
+                    emailErrorDiv.innerHTML += `
+                    <span>${error}</>
+                    `
+                });
+            }
+            if ("TextMessage" in errorsObject) {
+                errorsObject["TextMessage"].forEach(error => {
+                    textErrorDiv.innerHTML += `
+                    <span>${error}</>
+                    `
+                });
+            }
         })
 });

@@ -81,6 +81,7 @@ namespace Fotoalbum.Controllers
                 };
                 return View(model);
             }
+
             List<Category> selectedCategories = new();
             if(data.SelectedCategories != null)
             {
@@ -162,12 +163,51 @@ namespace Fotoalbum.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //code here
+                List<Category> categories = _photoalbumContext.Categories.ToList();
+                List<SelectListItem> checkboxes = new();
+                foreach (var category in categories)
+                {
+                    checkboxes.Add(new SelectListItem()
+                    {
+                        Text = category.Name,
+                        Value = category.Id.ToString()
+                    });
+                }
+                data.Categories = checkboxes;
+                return View(data);
             }
 
             try
             {
-                //more code here
+                List<Category> selectedCategories = new();
+                if (data.SelectedCategories != null)
+                {
+                    foreach (var selectedCat in data.SelectedCategories)
+                    {
+                        int selectedCatId = int.Parse(selectedCat);
+                        Category cat = _photoalbumContext.Categories.Where(c => c.Id == selectedCatId).FirstOrDefault();
+                        selectedCategories.Add(cat);
+                    }
+                }
+
+                PhotoEntry photoToUpdate = _photoalbumContext.PhotoEntries.Include(p => p.Categories).First(p => p.Id == Id);
+                photoToUpdate.Title = data.PhotoEntry.Title;
+                photoToUpdate.Description = data.PhotoEntry.Description;
+                photoToUpdate.IsVisible = data.PhotoEntry.IsVisible;
+                photoToUpdate.Categories?.Clear();
+                photoToUpdate.Categories = selectedCategories;
+
+                if (data.PhotoEntry.ImageFile != null)
+                {
+                    using var ms = new MemoryStream();
+                    data.PhotoEntry.ImageFile.CopyTo(ms);
+                    var fileBytes = ms.ToArray();
+                    var newImage = new Image() { Data = fileBytes };
+                    _photoalbumContext.Images.Add(newImage);
+                    _photoalbumContext.SaveChanges();
+                    photoToUpdate.ImageId = newImage.Id;
+                }
+                _photoalbumContext.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch

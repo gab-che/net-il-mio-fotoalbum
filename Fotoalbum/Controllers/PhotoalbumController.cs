@@ -165,7 +165,7 @@ namespace Fotoalbum.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
         public IActionResult Update(PhotoFormModel data, int Id)
         {
@@ -224,6 +224,8 @@ namespace Fotoalbum.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int Id)
         {
             try

@@ -1,8 +1,10 @@
 ﻿using Fotoalbum.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fotoalbum.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private PhotoalbumContext _photoalbumContext;
@@ -57,7 +59,7 @@ namespace Fotoalbum.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
         public IActionResult Update(int Id, Category data)
         {
@@ -78,8 +80,23 @@ namespace Fotoalbum.Controllers
             {
                 return View("NotFound", Id);
             }
+        }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int Id)
+        {
+            try
+            {
+                Category catToDelete = _photoalbumContext.Categories.FirstOrDefault(c => c.Id == Id);
+                _photoalbumContext.Categories.Remove(catToDelete);
+                _photoalbumContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View("NotFound", Id);
+            }
         }
     }
 }

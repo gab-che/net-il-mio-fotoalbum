@@ -1,6 +1,10 @@
-﻿const url = "https://localhost:7069/";
+﻿// api
+const url = "https://localhost:7069/";
 const urlApiGetPhotos = "api/HomePhoto/GetPhotos";
 const urlApiGetPhoto = "api/HomePhoto/GetPhoto";
+const urlApiSendMessage = "api/HomeMessage/SendMessage";
+
+// html nodes
 const noPhotoDiv = document.getElementById("no_photos");
 const photoListDiv = document.getElementById("photo_list");
 const loader = document.getElementById("loader");
@@ -58,6 +62,15 @@ async function getAllPhotos(input) {
 sendMsgButton.addEventListener("click", () => {
     const email = document.getElementById("msgEmail");
     const text = document.getElementById("msgText");
-    console.log(email.value, text.value);
-    
+
+    axios.post(`${url}${urlApiSendMessage}`, {
+        Email: email.value,
+        TextMessage: text.value
+    })
+        .then(resp => {
+            console.log(resp);
+        })
+        .catch(err => {
+            console.log(err);
+        })
 });

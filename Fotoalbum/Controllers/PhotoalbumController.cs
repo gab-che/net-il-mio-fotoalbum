@@ -146,16 +146,18 @@ namespace Fotoalbum.Controllers
         }
 
         [HttpGet]
-        public IActionResult Update(int Id)
+        public async Task<IActionResult> Update(int Id)
         {
             try
             {
                 var userId = _userManager.GetUserId(HttpContext.User);
+                var user = await _userManager.FindByIdAsync(userId);
+                bool isSuperadmin = await _userManager.IsInRoleAsync(user, "SUPERADMIN");
+
                 PhotoEntry photoEntry = _photoalbumContext.PhotoEntries
-                    .Include(p => p.Categories)
-                    .Include(p => p.Image)
-                    .Where(p => p.AuthorId == userId)
-                    .First(p => p.Id == Id);
+                        .Include(p => p.Categories)
+                        .Include(p => p.Image)
+                        .First(p => p.Id == Id && (isSuperadmin || p.AuthorId == userId));
 
                 List<Category> categories = _photoalbumContext.Categories.ToList();
                 

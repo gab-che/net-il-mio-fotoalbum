@@ -18,7 +18,7 @@
 <div class="row">
     @foreach (PhotoEntry photo in Model)
     {
-        <div class="col-md-4 mb-3">
+        <div class="col-md-6 col-lg-4 mb-3">
             <div class="card h-100 photo_card">
                 <div class="action_buttons d-flex gap-1">
                     <a href="@Url.Action("Show", "Photoalbum", new {Id=@photo.Id})" class="btn btn-primary btn-sm">

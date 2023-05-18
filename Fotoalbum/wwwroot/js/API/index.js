@@ -39,7 +39,7 @@ async function getAllPhotos(input) {
             photoListDiv.innerHTML = "";
             photos.forEach(photo => {
                 photoListDiv.innerHTML += `
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 col-lg-4 mb-3">
                         <div class="card h-100 photo_card">
                             <img class="card-img-top photo_img" src="${photo.imageBase64}" alt="${photo.title}">
                             <div class="card-body d-flex flex-column justify-content-between">

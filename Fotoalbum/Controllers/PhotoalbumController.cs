@@ -165,7 +165,7 @@ namespace Fotoalbum.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(PhotoFormModel data, int Id)
         {

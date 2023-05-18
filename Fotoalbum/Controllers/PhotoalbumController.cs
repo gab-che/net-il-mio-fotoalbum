@@ -32,10 +32,14 @@ namespace Fotoalbum.Controllers
 
             if (photos.Count > 0)
             {
-                var userId = _userManager.GetUserId(HttpContext.User);
-                photos = photos.Where(p => p.AuthorId == userId).ToList();
-                return View(photos);
-
+                if(User.IsInRole("SUPERADMIN"))
+                    return View(photos);
+                else
+                {
+                    var userId = _userManager.GetUserId(HttpContext.User);
+                    photos = photos.Where(p => p.AuthorId == userId).ToList();
+                    return View(photos);
+                }
             }
 
             return View("NoPhotos");

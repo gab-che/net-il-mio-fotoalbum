@@ -29,10 +29,16 @@ namespace Fotoalbum.Controllers
                 else
                     photos = new List<PhotoEntry>();
             }
+
             if (photos.Count > 0)
+            {
+                var userId = _userManager.GetUserId(HttpContext.User);
+                photos = photos.Where(p => p.AuthorId == userId).ToList();
                 return View(photos);
-            else
-                return View("NoPhotos");
+
+            }
+
+            return View("NoPhotos");
         }
 
         public IActionResult Show(int Id)

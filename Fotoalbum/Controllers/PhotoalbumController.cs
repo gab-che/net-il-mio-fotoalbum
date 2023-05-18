@@ -45,7 +45,11 @@ namespace Fotoalbum.Controllers
         {
             try
             {
-                PhotoEntry photo = _photoalbumContext.PhotoEntries.Include(p => p.Categories).First(p => p.Id == Id);
+                var userId = _userManager.GetUserId(HttpContext.User);
+                PhotoEntry photo = _photoalbumContext.PhotoEntries
+                    .Include(p => p.Categories)
+                    .Where(p => p.AuthorId == userId)
+                    .First(p => p.Id == Id);
                 return View(photo);
             }
             catch
@@ -142,9 +146,11 @@ namespace Fotoalbum.Controllers
         {
             try
             {
+                var userId = _userManager.GetUserId(HttpContext.User);
                 PhotoEntry photoEntry = _photoalbumContext.PhotoEntries
                     .Include(p => p.Categories)
                     .Include(p => p.Image)
+                    .Where(p => p.AuthorId == userId)
                     .First(p => p.Id == Id);
 
                 List<Category> categories = _photoalbumContext.Categories.ToList();
@@ -243,7 +249,8 @@ namespace Fotoalbum.Controllers
         {
             try
             {
-                PhotoEntry photoToDelete = _photoalbumContext.PhotoEntries.First(p => p.Id == Id);
+                var userId = _userManager.GetUserId(HttpContext.User);
+                PhotoEntry photoToDelete = _photoalbumContext.PhotoEntries.Where(p => p.AuthorId == userId).First(p => p.Id == Id);
                 _photoalbumContext.PhotoEntries.Remove(photoToDelete);
                 _photoalbumContext.SaveChanges();
                 return RedirectToAction("Index");

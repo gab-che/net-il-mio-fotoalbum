@@ -1,5 +1,6 @@
 ﻿using Fotoalbum.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,14 @@ namespace Fotoalbum.Controllers
     [Authorize]
     public class PhotoalbumController : Controller
     {
-        private PhotoalbumContext _photoalbumContext;
-        public PhotoalbumController(PhotoalbumContext photoalbumContext) => _photoalbumContext = photoalbumContext;
-
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly PhotoalbumContext _photoalbumContext;
+        public PhotoalbumController(PhotoalbumContext photoalbumContext, UserManager<IdentityUser> userManager)
+        {
+            _photoalbumContext = photoalbumContext;
+            _userManager = userManager;
+        }
+        
         public IActionResult Index(int? catId)
         {
             List<PhotoEntry> photos = _photoalbumContext.PhotoEntries.Include(p => p.Categories).Include(p => p.Image).ToList(); ;
@@ -106,6 +112,7 @@ namespace Fotoalbum.Controllers
                 Description = data.PhotoEntry.Description,
                 IsVisible = data.PhotoEntry.IsVisible,
                 Categories = selectedCategories,
+                AuthorId = _userManager.GetUserId(HttpContext.User),
             };
 
             if(data.PhotoEntry.ImageFile != null)

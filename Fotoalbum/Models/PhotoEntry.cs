@@ -26,6 +26,9 @@ namespace Fotoalbum.Models
         public IFormFile? ImageFile { get; set; }
         [NotMapped] public string ImageBase64 => Image == null ? "" : "data:image/jpg;base64," + Convert.ToBase64String(Image.Data);
 
+        [Column("author_id")]
+        public string? AuthorId { get; set; }
+
         public PhotoEntry() { }
     }
 }

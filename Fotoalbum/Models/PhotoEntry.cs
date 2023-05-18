@@ -21,7 +21,6 @@ namespace Fotoalbum.Models
         [Column("image_id")] public int? ImageId { get; set; }
         public Image? Image { get; set; }
 
-        [Required(ErrorMessage = "Campo obbligatorio")]
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
         [NotMapped] public string ImageBase64 => Image == null ? "" : "data:image/jpg;base64," + Convert.ToBase64String(Image.Data);

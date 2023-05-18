@@ -18,9 +18,16 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Photoalbum" asp-action="Index">Tutte le foto</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categorie</a>
-                    </li>
+                    @if (User.IsInRole("SUPERADMIN"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categorie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="Index">Messaggi</a>
+                        </li>
+                        
+                    }
                 }
                 <partial name="_LoginPartial" />
             </ul>

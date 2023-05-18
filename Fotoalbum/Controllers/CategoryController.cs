@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fotoalbum.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SUPERADMIN")]
     public class CategoryController : Controller
     {
         private PhotoalbumContext _photoalbumContext;

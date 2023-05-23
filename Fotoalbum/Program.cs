@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Fotoalbum;
 using System.Text.Json.Serialization;
+using Fotoalbum.Hubs;
 
 namespace Fotoalbum
 {
@@ -31,6 +32,9 @@ namespace Fotoalbum
             builder.Services.AddControllers()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+            // Signal R
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -56,6 +60,7 @@ namespace Fotoalbum
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
+            app.MapHub<ChatHub>("/chathub");
             app.Run();
         }
     }

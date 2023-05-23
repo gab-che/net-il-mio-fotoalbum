@@ -1,5 +1,8 @@
-﻿using Fotoalbum.Models;
+﻿using Fotoalbum.Hubs;
+using Fotoalbum.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Fotoalbum.Controllers.Api
 {
@@ -7,23 +10,22 @@ namespace Fotoalbum.Controllers.Api
     [ApiController]
     public class HomeMessageController : ControllerBase
     {
-        private PhotoalbumContext _photoalbumContext;
+        private readonly PhotoalbumContext _photoalbumContext;
         public HomeMessageController(PhotoalbumContext photoalbumContext) => _photoalbumContext = photoalbumContext;
 
         [HttpPost]
-        public IActionResult SendMessage([FromBody] Message data)
+        public async Task<IActionResult> SendMessage([FromBody] Message data)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(data);
             }
-            Message newMessage = new()
-            {
-                Email = data.Email,
-                TextMessage = data.TextMessage,
-            };
-            _photoalbumContext.Messages.Add(newMessage);
+            _photoalbumContext.Messages.Add(data);
             _photoalbumContext.SaveChanges();
+
+            // chiamata all'hub avverte che è arrivato un nuovo messaggio
+            await SignalRClient.Connect();
+            await SignalRClient.Connection.InvokeAsync("SendMessage", data);
             return Ok();
         }
     }
